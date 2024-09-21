@@ -9,10 +9,8 @@ namespace LeHuuTam.Models
 
         [Required]
         [StringLength(100)]
-        public string? Name { get; set; } 
+        public string? UserName { get; set; } 
 
-        [Required]
-        [EmailAddress]
         [StringLength(255)]
         public string? Email { get; set; } 
 

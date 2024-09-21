@@ -22,14 +22,13 @@ namespace LeHuuTam.Data
 
             // Cấu hình cho User
             modelBuilder.Entity<Users>()
-                .Property(u => u.Name)
+                .Property(u => u.UserName)
                 .IsRequired()
                 .HasMaxLength(50);
 
             modelBuilder.Entity<Users>()
                 .Property(u => u.Email)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(100);  // Không có IsRequired(), cho phép NULL
 
             modelBuilder.Entity<Users>()
                 .Property(u => u.Password)
