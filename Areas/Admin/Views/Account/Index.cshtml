@@ -1,0 +1,71 @@
+﻿@model IEnumerable<LeHuuTam.Models.Users>
+
+@{
+    ViewData["Title"] = "Account";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h2 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h2>
+        <div class="arrow">
+            <button class="btn btn-link" id="toggleButton" aria-expanded="false">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="table" class="table table-bordered table-hover">
+            <thead>
+                <tr style="text-align:center">
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Mật khẩu</th>
+                    <th>Email</th>
+                    <th>Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                }
+                @foreach (var account in Model)
+                {
+                    <tr>
+                        <td style="text-align:center">@index</td>
+                        <td>@account.UserName</td>
+                        <td>@account.Password</td>
+                        <td>@account.Email</td>
+                        <td style="text-align:center">
+                            <a href="@Url.Action("Details", "Account", new { id = account.Id })" class="btn btn-info btn-sm">Xem</a>
+                            <a href="@Url.Action("Edit", "Account", new { id = account.Id })" class="btn btn-warning btn-sm">Sửa</a>
+                            <a href="@Url.Action("Delete", "Account", new { id = account.Id })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">Xóa</a>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                searching: true,
+                paging: true,
+                ordering: true,
+                columnDefs: [
+                    { targets: 0, width: '20px', className: 'text-center' }, // Cột STT
+                    { targets: [1, 2, 3,4], width: '150px', className: 'text-center' } // Các cột Tên, Mật khẩu, Email
+                ]
+            });
+        });
+    </script>
+}
