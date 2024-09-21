@@ -38,15 +38,39 @@
                         <td>@account.Password</td>
                         <td>@account.Email</td>
                         <td style="text-align:center">
-                            <a href="@Url.Action("Details", "Account", new { id = account.Id })" class="btn btn-info btn-sm">Xem</a>
-                            <a href="@Url.Action("Edit", "Account", new { id = account.Id })" class="btn btn-warning btn-sm">Sửa</a>
-                            <a href="@Url.Action("Delete", "Account", new { id = account.Id })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">Xóa</a>
+                            <button data-id="@account.Id" class="btn btn-info btn-sm btnXem" data-toggle="modal" data-target="#model">Xem</button>
+                            <button data-id="@account.Id" class="btn btn-warning btn-sm btnSua" data-toggle="modal" data-target="#model">Sửa</button>
+                            <button data-id="@account.Id" class="btn btn-danger btn-sm btnXoa">Xóa</button>
                         </td>
+
                     </tr>
                     index++;
                 }
             </tbody>
         </table>
+    </div>
+
+   
+
+    <!-- Modal -->
+    <div class="modal fade" id="model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tiêu đề Modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Đây là nội dung của popup. Bạn có thể thêm bất kỳ nội dung nào ở đây, bao gồm văn bản, hình ảnh, form, v.v.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -62,9 +86,33 @@
                 paging: true,
                 ordering: true,
                 columnDefs: [
-                    { targets: 0, width: '20px', className: 'text-center' }, // Cột STT
-                    { targets: [1, 2, 3,4], width: '150px', className: 'text-center' } // Các cột Tên, Mật khẩu, Email
+                    { targets: 0, width: '20px', className: 'text-center' },
+                    { targets: [1, 2, 3,4], width: '150px', className: 'text-center' } 
                 ]
+            });
+
+            // Xem
+            $(document).on('click', '.btnXem', function () {
+                const id = $(this).data('id');
+                $('#model .modal-title').text("Xem Tài khoản"); 
+                $('#model .modal-body').text(`Thông tin tài khoản ID: ${id}`); 
+            });
+
+
+            // Sửa
+            $(document).on('click', '.btnSua', function () {
+                const id = $(this).data('id');
+                $('#model .modal-title').text("Sửa Tài khoản");
+                $('#model .modal-body').text(`Thông tin tài khoản ID: ${id}`);
+            });
+
+            // Xóa
+            $(document).on('click', '.btnXoa', function () {
+                const id = $(this).data('id');
+                $('#model .modal-title').text("Xoá Tài khoản");
+                if (confirm(`Bạn có chắc chắn muốn xóa tài khoản ID: ${id}?`)) {
+                    alert(`Đã xóa tài khoản ID: ${id}`);
+                }
             });
         });
     </script>
