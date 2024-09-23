@@ -37,6 +37,7 @@ namespace LeHuuTam.Areas.Admin.Controllers
 
                 if (user != null && user.Password == model.Password)
                 {
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
