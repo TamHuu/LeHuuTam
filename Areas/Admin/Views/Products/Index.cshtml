@@ -97,7 +97,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <style>
-
+     
         .modal-dialog {
             width: auto; /* Để modal tự động điều chỉnh */
             max-width: 50%; /* Để đảm bảo không vượt quá 90% chiều rộng màn hình */
@@ -107,7 +107,31 @@
     <script>
         $(document).ready(function () {
             $('#table').DataTable({
-                // Cấu hình DataTable
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                scrollX: false,  // Thêm thanh cuộn ngang
+                columnDefs: [
+                    { targets: 0, width: '20px', className: 'text-center' },
+                    { targets: [1, 2, 3,4,5,6], width: '200px', className: 'text-center' },
+                    { targets: [7], width: '200px', className: 'text-center' },
+                ],
+                language: {
+                    emptyTable: "Không có dữ liệu",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    infoEmpty: "Không có dữ liệu",
+                    lengthMenu: "Hiển thị _MENU_ mục trên trang",
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        first: "Đầu",
+                        last: "Cuối",
+                        next: "Tiếp",
+                        previous: "Trước"
+                    }
+                }
             });
 
             // Xem
@@ -121,16 +145,15 @@
                     success: function (response) {
                         if (response.success) {
                             const product = response.data;
-                            console.log("product",product)
                             $('#model .modal-title').text("Thông Tin Sản Phẩm");
                             $('#model .modal-body').html(`
-                                        <p><strong>Brand:</strong> ${product.brand}</p>
-                                        <p><strong>Model:</strong> ${product.model}</p>
-                                        <p><strong>Price:</strong> ${product.price}</p>
-                                        <p><strong>Description:</strong> ${product.description}</p>
-                                        <p><strong>Stock:</strong> ${product.stock}</p>
-                                        <p><strong>ImageUrl:</strong> ${product.imageUrl}</p>
-                                    `);
+                                <p><strong>Brand:</strong> ${product.brand}</p>
+                                <p><strong>Model:</strong> ${product.model}</p>
+                                <p><strong>Price:</strong> ${product.price}</p>
+                                <p><strong>Description:</strong> ${product.description}</p>
+                                <p><strong>Stock:</strong> ${product.stock}</p>
+                                <p><strong>ImageUrl:</strong> ${product.imageUrl}</p>
+                            `);
                             $('#model').modal('show');
                         } else {
                             alert(response.message);
@@ -154,31 +177,29 @@
                     success: function (response) {
                         if (response.success) {
                             const product = response.data;
-
-                            console.log("product", product)
                             $('#model .modal-title').text("Sửa Sản Phẩm");
                             $('#model .modal-body').html(`
-                                        <div class="form-group">
-                                            <label for="Brand">Brand</label>
-                                            <input class="form-control" type="text" id="Brand" value="${product.brand}" />
-                                            <br/>
-                                            <label for="Model">Model</label>
-                                            <input class="form-control" type="text" id="Model" value="${product.model}" />
-                                            <br/>
-                                            <label for="Price">Price</label>
-                                            <input class="form-control" type="text" id="Price" value="${product.price}" />
-                                            <br/>
-                                            <label for="Description">Description</label>
-                                            <textarea style="height: 150px;" class="form-control" id="Description">${product.description}</textarea>
-                                            <br/>
-                                            <label for="Stock">Stock</label>
-                                            <input class="form-control" type="text" id="Stock" value="${product.stock}" />
-                                            <br/>
-                                            <label for="ImageUrl">ImageUrl</label>
-                                            <input class="form-control" type="text" id="ImageUrl" value="${product.imageUrl}" />
-                                            <br/>
-                                        </div>
-                                    `);
+                                <div class="form-group">
+                                    <label for="Brand">Brand</label>
+                                    <input class="form-control" type="text" id="Brand" value="${product.brand}" />
+                                    <br/>
+                                    <label for="Model">Model</label>
+                                    <input class="form-control" type="text" id="Model" value="${product.model}" />
+                                    <br/>
+                                    <label for="Price">Price</label>
+                                    <input class="form-control" type="text" id="Price" value="${product.price}" />
+                                    <br/>
+                                    <label for="Description">Description</label>
+                                    <textarea style="height: 150px;" class="form-control" id="Description">${product.description}</textarea>
+                                    <br/>
+                                    <label for="Stock">Stock</label>
+                                    <input class="form-control" type="text" id="Stock" value="${product.stock}" />
+                                    <br/>
+                                    <label for="ImageUrl">ImageUrl</label>
+                                    <input class="form-control" type="text" id="ImageUrl" value="${product.imageUrl}" />
+                                    <br/>
+                                </div>
+                            `);
                             $('#model').modal('show');
                         } else {
                             alert(response.message);
@@ -188,13 +209,6 @@
                         alert("Đã xảy ra lỗi trong khi lấy thông tin Sản Phẩm.");
                     }
                 });
-            });
-
-            // Xóa
-            $(document).on('click', '.btnXoa', function () {
-                const id = $(this).data('id');
-                $('#btnConfirmDelete').data('id', id);
-                $('#modelDelete').modal('show');
             });
 
             // Xóa
@@ -235,27 +249,27 @@
                 $("#btnSaveChanges").show();
                 $('#model .modal-title').text("Thêm Sản Phẩm");
                 $('#model .modal-body').html(`
-                            <div class="form-group">
-                                <label for="Brand">Brand</label>
-                                <input class="form-control" type="text" id="Brand" />
-                                <br/>
-                                <label for="Model">Model</label>
-                                <input class="form-control" type="text" id="Model" />
-                                <br/>
-                                <label for="Price">Price</label>
-                                <input class="form-control" type="text" id="Price" />
-                                <br/>
-                                <label for="Description">Description</label>
-                                <input class="form-control" type="text" id="Description" />
-                                <br/>
-                                <label for="Stock">Stock</label>
-                                <input class="form-control" type="text" id="Stock" />
-                                <br/>
-                                <label for="ImageUrl">ImageUrl</label>
-                                <input class="form-control" type="text" id="ImageUrl" />
-                                <br/>
-                            </div>
-                        `);
+                    <div class="form-group">
+                        <label for="Brand">Brand</label>
+                        <input class="form-control" type="text" id="Brand" />
+                        <br/>
+                        <label for="Model">Model</label>
+                        <input class="form-control" type="text" id="Model" />
+                        <br/>
+                        <label for="Price">Price</label>
+                        <input class="form-control" type="text" id="Price" />
+                        <br/>
+                        <label for="Description">Description</label>
+                        <input class="form-control" type="text" id="Description" />
+                        <br/>
+                        <label for="Stock">Stock</label>
+                        <input class="form-control" type="text" id="Stock" />
+                        <br/>
+                        <label for="ImageUrl">ImageUrl</label>
+                        <input class="form-control" type="text" id="ImageUrl" />
+                        <br/>
+                    </div>
+                `);
                 $('#model').modal('show');
             });
 
@@ -295,4 +309,5 @@
             });
         });
     </script>
+
 }
