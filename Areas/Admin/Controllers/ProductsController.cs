@@ -20,6 +20,8 @@ namespace LeHuuTam.Areas.Admin.Controllers
             var result = _dbContext.Products.ToList();
             return View(result);
         }
+
+        // Xem
         [HttpGet]
         public JsonResult GetProductsById(int id)
         {
@@ -30,6 +32,8 @@ namespace LeHuuTam.Areas.Admin.Controllers
             }
             return Json(new { success = true, data = product });
         }
+
+        // Thêm
         [HttpPost]
         public JsonResult AddProduct(string Brand, string Model, string Price, string Description, string Stock, string ImageUrl)
         {
@@ -48,47 +52,47 @@ namespace LeHuuTam.Areas.Admin.Controllers
 
             return Json(new { success = true, data = products });
         }
-
-
-
-
-        //[HttpPost]
-        //public JsonResult UpdateProductById(int id)
-        //{
-        //    var product = _dbContext.Products.FirstOrDefault(u => u.Id == id);
-        //    if (product == null)
-        //    {
-        //        return Json(new { success = false, message = "User not found" });
-        //    }
-
-        //    Products.UserName = userName;
-        //    Products.Password = password;
-        //    Products.Email = email;
-
-        //    _dbContext.Users.Update(Products);
-        //    _dbContext.SaveChanges();
-
-        //    return Json(new { success = true, data = Products });
-        //}
-        [HttpDelete]
-        public JsonResult DeleteProducts(int id)
+        // Sửa
+        [HttpPut]
+        public JsonResult UpdateProduct(int id, string Brand, string Model, string Price, string Description, string Stock, string ImageUrl)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
-            if (user == null)
+            var product = _dbContext.Products.FirstOrDefault(u => u.Id == id);
+            if (product == null)
             {
                 return Json(new { success = false, message = "User not found" });
             }
 
+            product.Brand = Brand;
+            product.Model = Model;
+            product.Price = decimal.Parse(Price);
+            product.Description = Description;
+            product.Stock = int.Parse(Stock);
+            product.ImageUrl = ImageUrl;
+
+            _dbContext.Products.Update(product);
+            _dbContext.SaveChanges();
+
+            return Json(new { success = true, data = product });
+        }
+        [HttpDelete]
+        public JsonResult DeleteProduct(int id)
+        {
+            var product = _dbContext.Products.FirstOrDefault(u => u.Id == id);
+            if (product == null)
+            {
+                return Json(new { success = false, message = "product not found" });
+            }
+
             try
             {
-                _dbContext.Users.Remove(user);
+                _dbContext.Products.Remove(product);
                 _dbContext.SaveChanges();
 
-                return Json(new { success = true, message = "User deleted successfully." });
+                return Json(new { success = true, message = "product deleted successfully." });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Error deleting user: " + ex.Message });
+                return Json(new { success = false, message = "Error deleting product: " + ex.Message });
             }
         }
 

@@ -72,12 +72,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteLabel">Xóa Tài Khoản</h5>
+                    <h5 class="modal-title" id="confirmDeleteLabel">Xóa Sản Phẩm</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">Bạn có chắc chắn muốn xóa Tài Khoản này?</div>
+                <div class="modal-body">Bạn có chắc chắn muốn xóa Sản Phẩm này?</div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-danger" id="btnConfirmDelete">Xóa</button>
@@ -135,7 +135,7 @@
                     success: function (response) {
                         if (response.success) {
                             const user = response.data;
-                            $('#model .modal-title').text("Thông Tin Tài Khoản");
+                            $('#model .modal-title').text("Thông Tin Sản Phẩm");
                             $('#model .modal-body').html(`
                                         <p><strong>Tên:</strong> ${user.userName}</p>
                                         <p><strong>Mật khẩu:</strong> ${user.password}</p>
@@ -147,7 +147,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lấy thông tin Tài Khoản.");
+                        alert("Đã xảy ra lỗi trong khi lấy thông tin Sản Phẩm.");
                     }
                 });
             });
@@ -164,7 +164,7 @@
                     success: function (response) {
                         if (response.success) {
                             const user = response.data;
-                            $('#model .modal-title').text("Thông Tin Tài Khoản");
+                            $('#model .modal-title').text("Thông Tin Sản Phẩm");
                             $('#model .modal-body').html(`
                                         <div class="form-group">
                                             <label for="userName">Tên người dùng</label>
@@ -183,7 +183,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lấy thông tin Tài Khoản.");
+                        alert("Đã xảy ra lỗi trong khi lấy thông tin Sản Phẩm.");
                     }
                 });
             });
@@ -204,7 +204,7 @@
                         data: { id: id },
                         success: function (response) {
                             if (response.success) {
-                                alert("Xóa Tài Khoản thành công!");
+                                alert("Xóa Sản Phẩm thành công!");
                                 $('#modelDelete').modal('hide');
                                 location.reload();
                             } else {
@@ -212,7 +212,7 @@
                             }
                         },
                         error: function () {
-                            alert("Đã xảy ra lỗi trong khi xóa Tài Khoản.");
+                            alert("Đã xảy ra lỗi trong khi xóa Sản Phẩm.");
                         }
                     });
                 } else {
@@ -224,7 +224,7 @@
             $(document).on('click', '.btnThem', function () {
                 $('#btnSaveChanges').data('id', null);
                 $("#btnSaveChanges").show();
-                $('#model .modal-title').text("Thêm Tài Khoản");
+                $('#model .modal-title').text("Thêm Sản Phẩm");
                 $('#model .modal-body').html(`
                             <div class="form-group">
                                 <label for="userName">Tên người dùng</label>
@@ -259,7 +259,7 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            alert(id ? "Cập nhật Tài Khoản thành công!" : "Thêm Tài Khoản thành công!");
+                            alert(id ? "Cập nhật Sản Phẩm thành công!" : "Thêm Sản Phẩm thành công!");
                             $('#model').modal('hide');
                             location.reload();
                         } else {
@@ -267,7 +267,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lưu thông tin Tài Khoản.");
+                        alert("Đã xảy ra lỗi trong khi lưu thông tin Sản Phẩm.");
                     }
                 });
             });
