@@ -1,5 +1,6 @@
 ﻿using LeHuuTam.Data;
 using LeHuuTam.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace LeHuuTam.Areas.Admin.Controllers
         {
             _dbContext = context;
         }
-
+        [Authorize("Admin")]
         public IActionResult Index()
         {
             return View();

@@ -135,7 +135,7 @@
                     success: function (response) {
                         if (response.success) {
                             const user = response.data;
-                            $('#model .modal-title').text("Thông Tin Sản Phẩm");
+                            $('#model .modal-title').text("Thông Tin User");
                             $('#model .modal-body').html(`
                                         <p><strong>Tên:</strong> ${user.userName}</p>
                                         <p><strong>Mật khẩu:</strong> ${user.password}</p>
@@ -147,7 +147,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lấy thông tin Sản Phẩm.");
+                        alert("Đã xảy ra lỗi trong khi lấy thông tin User.");
                     }
                 });
             });
@@ -164,7 +164,7 @@
                     success: function (response) {
                         if (response.success) {
                             const user = response.data;
-                            $('#model .modal-title').text("Thông Tin Sản Phẩm");
+                            $('#model .modal-title').text("Thông Tin User");
                             $('#model .modal-body').html(`
                                         <div class="form-group">
                                             <label for="userName">Tên người dùng</label>
@@ -183,7 +183,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lấy thông tin Sản Phẩm.");
+                        alert("Đã xảy ra lỗi trong khi lấy thông tin User.");
                     }
                 });
             });
@@ -204,7 +204,7 @@
                         data: { id: id },
                         success: function (response) {
                             if (response.success) {
-                                alert("Xóa Sản Phẩm thành công!");
+                                alert("Xóa User thành công!");
                                 $('#modelDelete').modal('hide');
                                 location.reload();
                             } else {
@@ -212,7 +212,7 @@
                             }
                         },
                         error: function () {
-                            alert("Đã xảy ra lỗi trong khi xóa Sản Phẩm.");
+                            alert("Đã xảy ra lỗi trong khi xóa User.");
                         }
                     });
                 } else {
@@ -224,7 +224,7 @@
             $(document).on('click', '.btnThem', function () {
                 $('#btnSaveChanges').data('id', null);
                 $("#btnSaveChanges").show();
-                $('#model .modal-title').text("Thêm Sản Phẩm");
+                $('#model .modal-title').text("Thêm User");
                 $('#model .modal-body').html(`
                             <div class="form-group">
                                 <label for="userName">Tên người dùng</label>
@@ -259,7 +259,7 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            alert(id ? "Cập nhật Sản Phẩm thành công!" : "Thêm Sản Phẩm thành công!");
+                            alert(id ? "Cập nhật User thành công!" : "Thêm User thành công!");
                             $('#model').modal('hide');
                             location.reload();
                         } else {
@@ -267,7 +267,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lưu thông tin Sản Phẩm.");
+                        alert("Đã xảy ra lỗi trong khi lưu thông tin User.");
                     }
                 });
             });

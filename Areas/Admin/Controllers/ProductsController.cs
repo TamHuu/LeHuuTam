@@ -37,6 +37,12 @@ namespace LeHuuTam.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult AddProduct(string Brand, string Model, string Price, string Description, string Stock, string ImageUrl)
         {
+            var existingProduct = _dbContext.Products.FirstOrDefault(u => u.Brand == Brand);
+
+            if (existingProduct != null)
+            {
+                return Json(new { success = false, message = "Sản phẩm này đã tồn tại" });
+            }
             var products = new Products();
 
             products.Brand = Brand;
@@ -46,6 +52,7 @@ namespace LeHuuTam.Areas.Admin.Controllers
             products.Description = Description;
             products.Stock = int.Parse(Stock);
             products.ImageUrl = ImageUrl;
+
 
             _dbContext.Products.Add(products);
             _dbContext.SaveChanges();

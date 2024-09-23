@@ -73,17 +73,26 @@ namespace LeHuuTam.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult AddUser(string userName, string password, string email)
         {
-            var user = new Users();
-        
-            user.UserName = userName;
-            user.Password = password;
-            user.Email = email;
+            var existingUser = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
 
-            _dbContext.Users.Update(user);
+            if (existingUser != null)
+            {
+                return Json(new { success = false, message = "Tài khoản này đã tồn tại" });
+            }
+
+            var newUser = new Users
+            {
+                UserName = userName,
+                Password = password,
+                Email = email
+            };
+
+            _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
 
-            return Json(new { success = true, data = user });
+            return Json(new { success = true, data = newUser });
         }
+
 
 
     }
