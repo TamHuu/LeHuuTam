@@ -1,0 +1,276 @@
+﻿@model IEnumerable<LeHuuTam.Models.Users>
+
+@{
+    ViewData["Title"] = "User";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h2 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h2>
+        <div class="arrow">
+            <button class="btn btn-link btn-sm btnThem" data-toggle="modal" data-target="#model" aria-expanded="false">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="table" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="text-align:center">STT</th>
+                    <th style="text-align:center">Tên</th>
+                    <th style="text-align:center">Mật khẩu</th>
+                    <th style="text-align:center">Email</th>
+                    <th style="text-align:center">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                }
+                @foreach (var account in Model)
+                {
+                    <tr>
+                        <td style="text-align:center">@index</td>
+                        <td>@account.UserName</td>
+                        <td>@account.Password</td>
+                        <td>@account.Email</td>
+                        <td style="text-align:center">
+                            <button data-id="@account.Id" class="btn btn-info btn-sm btnXem" data-toggle="modal" data-target="#model">Xem</button>
+                            <button data-id="@account.Id" class="btn btn-warning btn-sm btnSua" data-toggle="modal" data-target="#model">Sửa</button>
+                            <button data-id="@account.Id" class="btn btn-danger btn-sm btnXoa" data-toggle="modal" data-target="#modelDelete">Xóa</button>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tiêu đề Modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveChanges">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xác Nhận -->
+    <div class="modal fade" id="modelDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteLabel">Xóa Tài Khoản</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn xóa tài khoản này?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmDelete">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                searching: true,
+                paging: true,
+                ordering: true,
+                columnDefs: [
+                    { targets: 0, width: '20px', className: 'text-center' },
+                    { targets: [1, 2, 3], width: '200px', className: 'text-center' },
+                    { targets: [4], width: '50px', className: 'text-center' },
+                ],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Không có dữ liệu trong bảng",
+                    "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 mục",
+                    "infoFiltered": "(đã lọc từ _MAX_ mục)",
+                    "lengthMenu": "Hiển thị _MENU_ mục",
+                    "loadingRecords": "Đang tải...",
+                    "processing": "Đang xử lý...",
+                    "search": "Tìm kiếm:",
+                    "searchPlaceholder": "Nhập từ khóa...",
+                    "zeroRecords": "Không tìm thấy kết quả nào",
+                    "paginate": {
+                        "first": "Đầu tiên",
+                        "last": "Cuối cùng",
+                        "next": "Kế tiếp",
+                        "previous": "Trước"
+                    }
+                }
+            });
+
+            // Xem
+            $(document).on('click', '.btnXem', function () {
+                const id = $(this).data('id');
+                $("#btnSaveChanges").hide();
+                $.ajax({
+                    url: "/admin/Users/GetUserById",
+                    type: "GET",
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            const user = response.data;
+                            $('#model .modal-title').text("Thông Tin Tài khoản");
+                            $('#model .modal-body').html(`
+                                        <p><strong>Tên:</strong> ${user.userName}</p>
+                                        <p><strong>Mật khẩu:</strong> ${user.password}</p>
+                                        <p><strong>Email:</strong> ${user.email}</p>
+                                    `);
+                            $('#model').modal('show');
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong khi lấy thông tin tài khoản.");
+                    }
+                });
+            });
+
+            // Sửa
+            $(document).on('click', '.btnSua', function () {
+                const id = $(this).data('id');
+                $('#btnSaveChanges').data('id', id);
+                $("#btnSaveChanges").show();
+                $.ajax({
+                    url: "/admin/Users/GetUserById",
+                    type: "GET",
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            const user = response.data;
+                            $('#model .modal-title').text("Thông Tin Tài khoản");
+                            $('#model .modal-body').html(`
+                                        <div class="form-group">
+                                            <label for="userName">Tên người dùng</label>
+                                            <input class="form-control" type="text" id="userName" value="${user.userName}" />
+                                            <br/>
+                                            <label for="password">Mật khẩu</label>
+                                            <input class="form-control" type="password" id="password" value="${user.password}" />
+                                            <br>
+                                            <label for="email">Email</label>
+                                            <input class="form-control" type="email" id="email" value="${user.email}" />
+                                        </div>
+                                    `);
+                            $('#model').modal('show');
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong khi lấy thông tin tài khoản.");
+                    }
+                });
+            });
+
+            // Xóa
+            $(document).on('click', '.btnXoa', function () {
+                const id = $(this).data('id');
+                $('#btnConfirmDelete').data('id', id);
+                $('#modelDelete').modal('show');
+            });
+
+            $(document).on('click', '#btnConfirmDelete', function () {
+                const id = $(this).data('id');
+                if (id) {
+                    $.ajax({
+                        url: "/admin/Users/DeleteUser",
+                        type: "DELETE",
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                alert("Xóa tài khoản thành công!");
+                                $('#modelDelete').modal('hide');
+                                location.reload();
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi trong khi xóa tài khoản.");
+                        }
+                    });
+                } else {
+                    alert("ID không hợp lệ!");
+                }
+            });
+
+            // Thêm
+            $(document).on('click', '.btnThem', function () {
+                $('#btnSaveChanges').data('id', null);
+                $("#btnSaveChanges").show();
+                $('#model .modal-title').text("Thêm Tài khoản");
+                $('#model .modal-body').html(`
+                            <div class="form-group">
+                                <label for="userName">Tên người dùng</label>
+                                <input class="form-control" type="text" id="userName" />
+                                <br/>
+                                <label for="password">Mật khẩu</label>
+                                <input class="form-control" type="password" id="password" />
+                                <br>
+                                <label for="email">Email</label>
+                                <input class="form-control" type="email" id="email" />
+                            </div>
+                        `);
+                $('#model').modal('show');
+            });
+
+            // Lưu thay đổi
+            $('#btnSaveChanges').click(function () {
+                const id = $(this).data('id');
+                const userName = $('#userName').val();
+                const password = $('#password').val();
+                const email = $('#email').val();
+                const url = id ? "/admin/Users/UpdateUser" : "/admin/Users/AddUser";
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        id: id,
+                        userName: userName,
+                        password: password,
+                        email: email
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(id ? "Cập nhật tài khoản thành công!" : "Thêm tài khoản thành công!");
+                            $('#model').modal('hide');
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong khi lưu thông tin tài khoản.");
+                    }
+                });
+            });
+        });
+    </script>
+}
