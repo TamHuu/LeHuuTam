@@ -22,7 +22,7 @@ namespace LeHuuTam.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LeHuuTam.Models.Camera", b =>
+            modelBuilder.Entity("LeHuuTam.Models.Products", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace LeHuuTam.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cameras");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("LeHuuTam.Models.Users", b =>

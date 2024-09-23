@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeHuuTam.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240921072514_initdb")]
-    partial class initdb
+    [Migration("20240923035254_inittdb")]
+    partial class inittdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace LeHuuTam.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LeHuuTam.Models.Camera", b =>
+            modelBuilder.Entity("LeHuuTam.Models.Products", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace LeHuuTam.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cameras");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("LeHuuTam.Models.Users", b =>

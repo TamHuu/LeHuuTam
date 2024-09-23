@@ -10,13 +10,13 @@ namespace LeHuuTam.Data
         {
         }
 
-        public DbSet<Camera> Cameras { get; set; }
+        public DbSet<Products> Products { get; set; }
         public DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Cấu hình cho Camera
-            modelBuilder.Entity<Camera>()
+            modelBuilder.Entity<Products>()
                 .Property(c => c.Price)
                 .HasColumnType("decimal(18, 2)");
 

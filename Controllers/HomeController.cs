@@ -19,7 +19,7 @@ namespace LeHuuTam.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var result = _context.Cameras.ToList();
+            var result = _context.Products.ToList();
             return View(result);
         }
 

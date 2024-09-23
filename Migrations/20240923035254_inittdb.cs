@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LeHuuTam.Migrations
 {
     /// <inheritdoc />
-    public partial class initdb : Migration
+    public partial class inittdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cameras",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -27,7 +27,7 @@ namespace LeHuuTam.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cameras", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,7 +51,7 @@ namespace LeHuuTam.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cameras");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Users");

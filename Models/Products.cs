@@ -1,6 +1,6 @@
 ﻿namespace LeHuuTam.Models
 {
-    public class Camera
+    public class Products
     {
         public int Id { get; set; }
         public string? Brand { get; set; }

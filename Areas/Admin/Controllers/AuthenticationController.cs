@@ -34,7 +34,7 @@ namespace LeHuuTam.Areas.Admin.Controllers
             {
                 var user = await _dbContext.Users.FirstOrDefaultAsync(m => m.UserName == model.UserName);
 
-                if (user != null && user.Password == model.Password) 
+                if (user != null && user.Password == model.Password)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -64,16 +64,16 @@ namespace LeHuuTam.Areas.Admin.Controllers
                 if (result == null)
                 {
                     _dbContext.Users.Add(model);
-                    await _dbContext.SaveChangesAsync(); 
+                    await _dbContext.SaveChangesAsync();
                     return RedirectToAction("Login", "Authentication");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "This username already exists"); 
+                    ModelState.AddModelError("", "This username already exists");
                 }
             }
 
-            return View(model); 
+            return View(model);
         }
 
     }

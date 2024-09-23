@@ -1,7 +1,6 @@
-﻿@model IEnumerable<LeHuuTam.Models.Users>
-
+﻿@model IEnumerable<LeHuuTam.Models.Products>
 @{
-    ViewData["Title"] = "User";
+    ViewData["Title"] = "List Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,9 +18,12 @@
             <thead>
                 <tr>
                     <th style="text-align:center">STT</th>
-                    <th style="text-align:center">Tên</th>
-                    <th style="text-align:center">Mật khẩu</th>
-                    <th style="text-align:center">Email</th>
+                    <th style="text-align:center">Brand</th>
+                    <th style="text-align:center">Model</th>
+                    <th style="text-align:center">Price</th>
+                    <th style="text-align:center">Description</th>
+                    <th style="text-align:center">Stock</th>
+                    <th style="text-align:center">ImageUrl</th>
                     <th style="text-align:center">Chức năng</th>
                 </tr>
             </thead>
@@ -29,17 +31,20 @@
                 @{
                     int index = 1;
                 }
-                @foreach (var account in Model)
+                @foreach (var product in Model)
                 {
                     <tr>
                         <td style="text-align:center">@index</td>
-                        <td>@account.UserName</td>
-                        <td>@account.Password</td>
-                        <td>@account.Email</td>
+                        <td>@product.Brand</td>
+                        <td>@product.Model</td>
+                        <td>@product.Price</td>
+                        <td>@product.Description</td>
+                        <td>@product.Stock</td>
+                        <td>@product.ImageUrl</td>
                         <td style="text-align:center">
-                            <button data-id="@account.Id" class="btn btn-info btn-sm btnXem" data-toggle="modal" data-target="#model">Xem</button>
-                            <button data-id="@account.Id" class="btn btn-warning btn-sm btnSua" data-toggle="modal" data-target="#model">Sửa</button>
-                            <button data-id="@account.Id" class="btn btn-danger btn-sm btnXoa" data-toggle="modal" data-target="#modelDelete">Xóa</button>
+                            <button data-id="@product.Id" class="btn btn-info btn-sm btnXem">Xem</button>
+                            <button data-id="@product.Id" class="btn btn-warning btn-sm btnSua">Sửa</button>
+                            <button data-id="@product.Id" class="btn btn-danger btn-sm btnXoa" data-toggle="modal" data-target="#modelDelete">Xóa</button>
                         </td>
                     </tr>
                     index++;
@@ -91,37 +96,18 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <style>
 
-   <script>
+        .modal-dialog {
+            width: auto; /* Để modal tự động điều chỉnh */
+            max-width: 50%; /* Để đảm bảo không vượt quá 90% chiều rộng màn hình */
+        }
+
+    </style>
+    <script>
         $(document).ready(function () {
             $('#table').DataTable({
-                searching: true,
-                paging: true,
-                ordering: true,
-                columnDefs: [
-                    { targets: 0, width: '20px', className: 'text-center' },
-                    { targets: [1, 2, 3], width: '200px', className: 'text-center' },
-                    { targets: [4], width: '50px', className: 'text-center' },
-                ],
-                language: {
-                    "decimal": "",
-                    "emptyTable": "Không có dữ liệu trong bảng",
-                    "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
-                    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 mục",
-                    "infoFiltered": "(đã lọc từ _MAX_ mục)",
-                    "lengthMenu": "Hiển thị _MENU_ mục",
-                    "loadingRecords": "Đang tải...",
-                    "processing": "Đang xử lý...",
-                    "search": "Tìm kiếm:",
-                    "searchPlaceholder": "Nhập từ khóa...",
-                    "zeroRecords": "Không tìm thấy kết quả nào",
-                    "paginate": {
-                        "first": "Đầu tiên",
-                        "last": "Cuối cùng",
-                        "next": "Kế tiếp",
-                        "previous": "Trước"
-                    }
-                }
+                // Cấu hình DataTable
             });
 
             // Xem
@@ -129,17 +115,21 @@
                 const id = $(this).data('id');
                 $("#btnSaveChanges").hide();
                 $.ajax({
-                    url: "/admin/Users/GetUserById",
+                    url: "/admin/Products/GetProductsById",
                     type: "GET",
                     data: { id: id },
                     success: function (response) {
                         if (response.success) {
-                            const user = response.data;
+                            const product = response.data;
+                            console.log("product",product)
                             $('#model .modal-title').text("Thông Tin Sản Phẩm");
                             $('#model .modal-body').html(`
-                                        <p><strong>Tên:</strong> ${user.userName}</p>
-                                        <p><strong>Mật khẩu:</strong> ${user.password}</p>
-                                        <p><strong>Email:</strong> ${user.email}</p>
+                                        <p><strong>Brand:</strong> ${product.brand}</p>
+                                        <p><strong>Model:</strong> ${product.model}</p>
+                                        <p><strong>Price:</strong> ${product.price}</p>
+                                        <p><strong>Description:</strong> ${product.description}</p>
+                                        <p><strong>Stock:</strong> ${product.stock}</p>
+                                        <p><strong>ImageUrl:</strong> ${product.imageUrl}</p>
                                     `);
                             $('#model').modal('show');
                         } else {
@@ -158,23 +148,33 @@
                 $('#btnSaveChanges').data('id', id);
                 $("#btnSaveChanges").show();
                 $.ajax({
-                    url: "/admin/Users/GetUserById",
+                    url: "/admin/Products/GetProductsById",
                     type: "GET",
                     data: { id: id },
                     success: function (response) {
                         if (response.success) {
-                            const user = response.data;
-                            $('#model .modal-title').text("Thông Tin Sản Phẩm");
+                            const product = response.data;
+                            $('#model .modal-title').text("Sửa Sản Phẩm");
                             $('#model .modal-body').html(`
                                         <div class="form-group">
-                                            <label for="userName">Tên người dùng</label>
-                                            <input class="form-control" type="text" id="userName" value="${user.userName}" />
+                                            <label for="Brand">Brand</label>
+                                            <input class="form-control" type="text" id="Brand" value="${product.brand}" />
                                             <br/>
-                                            <label for="password">Mật khẩu</label>
-                                            <input class="form-control" type="password" id="password" value="${user.password}" />
-                                            <br>
-                                            <label for="email">Email</label>
-                                            <input class="form-control" type="email" id="email" value="${user.email}" />
+                                            <label for="Model">Model</label>
+                                            <input class="form-control" type="text" id="Model" value="${product.model}" />
+                                            <br/>
+                                            <label for="Price">Price</label>
+                                            <input class="form-control" type="text" id="Price" value="${product.price}" />
+                                            <br/>
+                                            <label for="Description">Description</label>
+                                            <textarea style="height: 150px;" class="form-control" id="Description">${product.description}</textarea>
+                                            <br/>
+                                            <label for="Stock">Stock</label>
+                                            <input class="form-control" type="text" id="Stock" value="${product.stock}" />
+                                            <br/>
+                                            <label for="ImageUrl">ImageUrl</label>
+                                            <input class="form-control" type="text" id="ImageUrl" value="${product.imageUrl}" />
+                                            <br/>
                                         </div>
                                     `);
                             $('#model').modal('show');
@@ -199,7 +199,7 @@
                 const id = $(this).data('id');
                 if (id) {
                     $.ajax({
-                        url: "/admin/Users/DeleteUser",
+                        url: "/admin/Products/DeleteProduct",
                         type: "DELETE",
                         data: { id: id },
                         success: function (response) {
@@ -227,39 +227,53 @@
                 $('#model .modal-title').text("Thêm Sản Phẩm");
                 $('#model .modal-body').html(`
                             <div class="form-group">
-                                <label for="userName">Tên người dùng</label>
-                                <input class="form-control" type="text" id="userName" />
+                                <label for="Brand">Brand</label>
+                                <input class="form-control" type="text" id="Brand" />
                                 <br/>
-                                <label for="password">Mật khẩu</label>
-                                <input class="form-control" type="password" id="password" />
-                                <br>
-                                <label for="email">Email</label>
-                                <input class="form-control" type="email" id="email" />
+                                <label for="Model">Model</label>
+                                <input class="form-control" type="text" id="Model" />
+                                <br/>
+                                <label for="Price">Price</label>
+                                <input class="form-control" type="text" id="Price" />
+                                <br/>
+                                <label for="Description">Description</label>
+                                <input class="form-control" type="text" id="Description" />
+                                <br/>
+                                <label for="Stock">Stock</label>
+                                <input class="form-control" type="text" id="Stock" />
+                                <br/>
+                                <label for="ImageUrl">ImageUrl</label>
+                                <input class="form-control" type="text" id="ImageUrl" />
+                                <br/>
                             </div>
                         `);
                 $('#model').modal('show');
             });
 
             // Lưu thay đổi
-            $('#btnSaveChanges').click(function () {
+            $('#btnSaveChanges').on('click', function () {
                 const id = $(this).data('id');
-                const userName = $('#userName').val();
-                const password = $('#password').val();
-                const email = $('#email').val();
-                const url = id ? "/admin/Users/UpdateUser" : "/admin/Users/AddUser";
+                const productData = {
+                    Id: id,
+                    Brand: $('#Brand').val(),
+                    Model: $('#Model').val(),
+                    Price: $('#Price').val(),
+                    Description: $('#Description').val(),
+                    Stock: $('#Stock').val(),
+                    ImageUrl: $('#ImageUrl').val()
+                };
+
+                const url = id ? "/admin/Products/UpdateProduct" : "/admin/Products/AddProduct";
+                const type = id ? "PUT" : "POST";
 
                 $.ajax({
                     url: url,
-                    type: "POST",
-                    data: {
-                        id: id,
-                        userName: userName,
-                        password: password,
-                        email: email
-                    },
+                    type: type,
+                    contentType: "application/json",
+                    data: JSON.stringify(productData),
                     success: function (response) {
                         if (response.success) {
-                            alert(id ? "Cập nhật Sản Phẩm thành công!" : "Thêm Sản Phẩm thành công!");
+                            alert("Lưu thay đổi thành công!");
                             $('#model').modal('hide');
                             location.reload();
                         } else {
@@ -267,7 +281,7 @@
                         }
                     },
                     error: function () {
-                        alert("Đã xảy ra lỗi trong khi lưu thông tin Sản Phẩm.");
+                        alert("Đã xảy ra lỗi trong khi lưu thay đổi.");
                     }
                 });
             });
