@@ -32,7 +32,7 @@ namespace LeHuuTam.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateUserById(int id, string userName, string password, string email)
+        public JsonResult UpdateUser(int id, string userName, string password, string email)
         {
             var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
